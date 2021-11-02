@@ -44,3 +44,5 @@ def test_modifica_obiect():
     assert get_descriere(obiectNonupdate) =="nuvela psihologica"
     assert get_pret_achizitie(obiectNonupdate) == 200
     assert get_locatie(obiectNonupdate) =="2346"
+
+

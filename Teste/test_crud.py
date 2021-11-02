@@ -45,4 +45,10 @@ def test_modifica_obiect():
     assert get_pret_achizitie(obiectNonupdate) == 200
     assert get_locatie(obiectNonupdate) =="2346"
 
+    try:
+        lista = modifica_obiect(lista, '12d', '', 'prajitura roz new',23, 567)
+        assert False
+    except ValueError:
+        assert True
+
 

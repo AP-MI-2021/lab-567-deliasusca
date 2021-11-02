@@ -1,4 +1,5 @@
 from Domain.obiect import creeaza_obiect, get_id
+from Logic.validator import validate_obiect
 
 
 def adaugare_obiect(id,nume,descriere,pret_achizitie,locatie,lista):
@@ -11,8 +12,11 @@ def adaugare_obiect(id,nume,descriere,pret_achizitie,locatie,lista):
     :param locatie: string
     :return: lista ce contine obiectele vechi+noul obiect
     """
+    id, nume, descriere, pret_achizitie, locatie = validate_obiect(id, nume, descriere, pret_achizitie, locatie)
     obiect= creeaza_obiect(id, nume, descriere, pret_achizitie, locatie)
     return lista+[obiect]
+
+
 
 def getById(id,lista):
     """
@@ -46,6 +50,7 @@ def modifica_obiect(id,nume,descriere,pret_achizitie,locatie,lista):
     :param lista: lista de obiecte
     :return: lista cu obiectul cu id-ul dat,modificat
     """
+    id, nume, descriere, pret_achizitie, locatie = validate_obiect(id, nume, descriere, pret_achizitie, locatie)
     lista_noua=[]
     for obiect in lista:
         if get_id(obiect)==id:
@@ -54,3 +59,5 @@ def modifica_obiect(id,nume,descriere,pret_achizitie,locatie,lista):
         else:
             lista_noua.append(obiect)
     return lista_noua
+
+

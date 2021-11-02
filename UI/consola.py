@@ -7,8 +7,8 @@ def printMenu():
     print("1.Adaugare obiect:")
     print("2.Stergere obiect:")
     print("3.Modificare obiect:")
-    print("4. Mutarea obiectelor dintr-o locatie in alta")
-    print("5.  Concatenarea unui string citit la toate descrierile "
+    print("4.Mutarea obiectelor dintr-o locatie in alta")
+    print("5.Concatenarea unui string citit la toate descrierile "
           "obiectelor cu prețul mai mare decât o valoare citită.")
     print("a.Afisare rezervari: ")
     print("x.Iesire")
@@ -24,6 +24,23 @@ def ui_adaugare_obiect(lista):
     except ValueError as ve:
         print("Eroare: {}".format(ve))
         return lista
+    """id = input('Dati id-ul obiectului')
+    nume = input('Dati numele')
+    descriere = input('Dati descrierea')
+    pret_achizitie = input('Dati pretul')
+    locatie = input('Dati locatia')
+    try:
+        lista = adaugare_obiect(prajituri, id, nume, descriere, pret_achizitie, locatie)
+        print('Obiectul a fost adaugat cu succes')
+        return lista
+    except ValueError as ve:
+        print("!!! Au aparut erori")
+        print(ve)
+    except:
+        print('Unknown error')
+    finally:
+        pass
+        # codul de aici se executa si daca a fost functia executata cu succes si si daca au aparut erori"""
 
 def ui_stergere_obiect(lista):
     id = input ("Dati id-ul obiectului de sters: ")
@@ -35,6 +52,15 @@ def ui_modifica_obiect(lista):
     descriere = input ("Dati noua descriere: ")
     pret_achizitie = float(input ("Dati noul pret de achizitie: "))
     locatie = input ("Dati noua locatie: ")
+    """try:
+        lista = modifica_obiect(lista, id, nume, descriere, pret_achizitie, locatie)
+        print('Obiectul a fost modificat cu succes')
+        return lista
+    except ValueError as ve:
+        print("!!! Au aparut erori")
+        print(ve)
+    except:
+        print('Unknown error')"""
     return modifica_obiect(id, nume, descriere, pret_achizitie, locatie, lista)
 
 def show_all(lista):
@@ -65,6 +91,11 @@ def runMenu(lista):
             break
         else:
             print("Optiunea este gresita!Reincercati: ")
+
+
+
+
+
 
 
 

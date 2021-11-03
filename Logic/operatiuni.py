@@ -3,7 +3,7 @@ from Domain.obiect import get_nume, creeaza_obiect, get_id, get_descriere, get_p
 
 def schimbare_locatie(locatie_initiala, locatie_noua, lista):
     """
-    muta toate obiectele dintr-o locatie in alta
+    Muta toate obiectele dintr-o locatie in alta
     :param locatie_initiala: locatia initiala
     :param locatie_noua:  locatia unde o sa punem obiectele
     :param lista: lista de obiecte
@@ -47,3 +47,15 @@ def schimbare_descriere_dupa_pret(pret_comparat, str_concat, lista):
         else:
             lista_noua.append(obiect)
     return lista_noua
+
+def sort_obiecte(lista):
+    """
+
+    :param lista:
+    :return:
+    """
+    #return sorted(lista, key=sorting_criteria)
+    return sorted(lista, key = lambda obiect: get_pret_achizitie(obiect))
+
+def sorting_criteria(obiect):
+    return get_pret_achizitie(obiect)

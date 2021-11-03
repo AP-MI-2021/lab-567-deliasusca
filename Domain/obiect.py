@@ -9,14 +9,14 @@ def creeaza_obiect(id, nume, descriere, pret_achizitie, locatie):
     :param locatie: string
     :return: un dictionar ce contine un obiect
     """
-    return [id, nume, descriere, pret_achizitie, locatie]
-    #return {
-    #    "id": id,
-    #    "nume": nume,
-    #    "descriere": descriere,
-    #    "pret_achizitie": pret_achizitie,
-    #    "locatie": locatie
-    #}
+    #return [id, nume, descriere, pret_achizitie, locatie]
+    return {
+        "id": id,
+        "nume": nume,
+        "descriere": descriere,
+        "pret_achizitie": pret_achizitie,
+        "locatie": locatie
+    }
 
 def get_id(obiect):
     """
@@ -24,8 +24,8 @@ def get_id(obiect):
     :param obiect: dict
     :return: id obiect - string
     """
-    return obiect[0]
-    #return obiect["id"]
+    #return obiect[0]
+    return obiect["id"]
 
 def set_id(obiect, id):
     """
@@ -34,8 +34,8 @@ def set_id(obiect, id):
     :param id: string
     :return:
     """
-    obiect[0] = id
-    #obiect["id"] = id
+    #obiect[0] = id
+    obiect["id"] = id
 
 def get_nume(obiect):
     """
@@ -43,8 +43,8 @@ def get_nume(obiect):
     :param nume: string
     :return: nume obiect - string
     """
-    return obiect[1]
-    #return obiect["nume"]
+    #return obiect[1]
+    return obiect["nume"]
 
 def set_nume(obiect, nume):
     """
@@ -53,8 +53,8 @@ def set_nume(obiect, nume):
     :param nume: string
     :return:
     """
-    obiect[1] = nume
-    #obiect["nume"] = nume
+    #obiect[1] = nume
+    obiect["nume"] = nume
 
 def get_descriere(obiect):
     """
@@ -62,8 +62,8 @@ def get_descriere(obiect):
     :param obiect: dict
     :return: descrierea obiectului - string
     """
-    return obiect[2]
-    #return obiect["descriere"]
+    #return obiect[2]
+    return obiect["descriere"]
 
 def set_descriere(obiect, descriere):
     """
@@ -72,8 +72,8 @@ def set_descriere(obiect, descriere):
     :param descriere: string
     :return:
     """
-    obiect[2] = descriere
-    #obiect["descriere"] = descriere
+    #obiect[2] = descriere
+    obiect["descriere"] = descriere
 
 def get_pret_achizitie(obiect):
     """
@@ -81,8 +81,8 @@ def get_pret_achizitie(obiect):
     :param obiect: dict
     :return: pret obiect - float
     """
-    return obiect[3]
-    #return obiect["pret_achizitie"]
+    #return obiect[3]
+    return obiect["pret_achizitie"]
 
 def set_pret_achizitie(obiect, pret_achizitie):
     """
@@ -91,8 +91,8 @@ def set_pret_achizitie(obiect, pret_achizitie):
     :param pret_achizitie: float
     :return:
     """
-    obiect[3] = pret_achizitie
-    #obiect["pret_achizitie"] = pret_achizitie
+    #obiect[3] = pret_achizitie
+    obiect["pret_achizitie"] = pret_achizitie
 
 def get_locatie(obiect):
     """
@@ -100,8 +100,8 @@ def get_locatie(obiect):
     :param obiect: dict
     :return: locatie obiect - string
     """
-    return obiect[4]
-    #return obiect["locatie"]
+    #return obiect[4]
+    return obiect["locatie"]
 
 def set_locatie(obiect, locatie):
     """
@@ -110,8 +110,8 @@ def set_locatie(obiect, locatie):
     :param locatie: string
     :return: 
     """
-    obiect[4] = locatie
-    #obiect["locatie"] = locatie
+    #obiect[4] = locatie
+    obiect["locatie"] = locatie
 
 def to_string(obiect):
     return "id: {} ,nume: {}, descriere: {},pret achizitie: {},locatie: {}".format(

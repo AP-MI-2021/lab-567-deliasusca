@@ -1,7 +1,6 @@
-from Domain.obiect import get_locatie, get_pret_achizitie,get_descriere
+from Domain.obiect import *
 from Logic.crud import adaugare_obiect, getById
-from Logic.operatiuni import schimbare_locatie, schimbare_descriere_dupa_pret
-
+from Logic.operatiuni import schimbare_locatie, schimbare_descriere_dupa_pret, sort_obiecte
 
 def test_schimbare_locatie():
     lista = []
@@ -26,3 +25,13 @@ def test_schimbare_descriere_dupa_pret():
     assert get_descriere(getById("1", lista)) == "desc1"
     assert get_descriere(getById("2", lista)) == "desc2_concatenat"
     assert get_descriere(getById("3", lista)) == "desc3"
+
+def test_ordonare_obiecte():
+    o1 = creeaza_obiect("1", "carte", "desc1", 12, "arad")
+    o2 = creeaza_obiect("2", "caiet", "desc2", 334, "alba")
+    o3 = creeaza_obiect("3", "creion","desc3", 6, "cluj")
+
+    sorted_list = sort_obiecte([o1, o2, o3])
+    assert sorted_list[0] == o3
+    assert sorted_list[1] == o1
+    assert sorted_list[2] == o2

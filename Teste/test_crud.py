@@ -5,48 +5,48 @@ from Logic.crud import getById, adaugare_obiect, modifica_obiect, stergere_obiec
 def test_adaugare_obiect():
     lista = []
     lista = adaugare_obiect("111", "cartea Minunea", "inspirat din realitate", 100, "2345", lista)
-
+    obiect_adaugat = creeaza_obiect("111", "cartea Minunea", "inspirat din realitate", 100, "2345")
     assert len(lista) == 1
-    assert get_id(getById("111", lista)) == "111"
-    assert get_nume(getById("111", lista)) == "cartea Minunea"
-    assert get_descriere(getById("111", lista)) == "inspirat din realitate"
-    assert get_pret_achizitie(getById("111", lista)) == 100
-    assert get_locatie(getById("111", lista)) == "2345"
+    assert lista[0] == obiect_adaugat
+    assert get_nume(lista[0]) == "cartea Minunea"
+    assert get_descriere(lista[0]) == "inspirat din realitate"
+    assert get_pret_achizitie(lista[0]) == 100
+    assert get_locatie(lista[0]) == "2345"
+
+    lista = adaugare_obiect('12d', 'nume2', 'descriere2', 34.05, 'S345', lista)
+    obiect_adaugat_2 = creeaza_obiect('12d', 'nume2', 'descriere2', 34.05, 'S345')
+    assert len(lista) == 2
+    assert lista[0] == obiect_adaugat
+    assert lista[1] == obiect_adaugat_2
 
 def test_stergere_obiect():
-    lista=[]
-    lista = adaugare_obiect("111", "cartea Minunea", "inspirat din realitate", 100, "2345", lista)
-    lista = adaugare_obiect("112", "Moara cu noroc", "nuvela psihologica", 200, "2346", lista)
+    o1 = creeaza_obiect('123', 'nume1', 'descriere1', 45.89, 'S905')
+    o2 = creeaza_obiect('12d', 'nume2', 'descriere2', 34.05, 'S345')
+    lista = [o1, o2]
+    assert len(lista) == 2
+    lista = stergere_obiect('12d', lista)
+    assert len(lista) == 1
+    lista = stergere_obiect('1sd2d', lista)
+    assert len(lista) == 1
 
-    lista = stergere_obiect("112", lista)
-    assert len(lista) ==1
-    assert getById("112", lista) is None
-    assert getById("111", lista) is not None
 
 def test_modifica_obiect():
-    lista=[]
-    lista = adaugare_obiect("111", "cartea Minunea", "inspirat din realitate", 100, "2345", lista)
-    lista = adaugare_obiect("112", "Moara cu noroc", "nuvela psihologica", 200, "2346", lista)
+    o1 = creeaza_obiect('123', 'nume1', 'descriere1', 45.89, 'S905')
+    o2 = creeaza_obiect('12d', 'nume2', 'descriere2', 34.05, 'S345')
 
-    lista=modifica_obiect("111", "Culegere de geometrie plana", "matematica clasa a 8-a", 300, "2347", lista)
-
-    obiectUpdate= getById("111", lista)
-    assert get_id(obiectUpdate) == "111"
-    assert get_nume(obiectUpdate) == "Culegere de geometrie plana"
-    assert get_descriere(obiectUpdate) == "matematica clasa a 8-a"
-    assert get_pret_achizitie(obiectUpdate) == 300
-    assert get_locatie(obiectUpdate) == "2347"
-
-    obiectNonupdate= getById("112", lista)
-
-    assert get_id(obiectNonupdate) == "112"
-    assert get_nume(obiectNonupdate) == "Moara cu noroc"
-    assert get_descriere(obiectNonupdate) =="nuvela psihologica"
-    assert get_pret_achizitie(obiectNonupdate) == 200
-    assert get_locatie(obiectNonupdate) =="2346"
+    lista = [o1, o2]
+    assert len(lista) == 2
+    lista = modifica_obiect('12d', 'nume new', 'descriere new', 46, 'S345', lista)
+    assert len(lista) == 2
+    o1_new = getById('12d', lista)
+    assert get_id(o1_new) == '12d'
+    assert get_nume(o1_new) == 'nume new'
+    assert get_descriere(o1_new) == 'descriere new'
+    assert get_pret_achizitie(o1_new) == 46
+    assert get_locatie(o1_new) == 'S345'
 
     try:
-        lista = modifica_obiect(lista, '12d', '', 'prajitura roz new',23, 567)
+        lista = modifica_obiect('12d', '', 'descriere new', -46, 'S345', lista)
         assert False
     except ValueError:
         assert True

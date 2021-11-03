@@ -1,9 +1,9 @@
-from UI.consola import run_console
+from UI.consola import runMenu
 from Teste.run_all_tests import runAllTests
 
 def main():
     lista = []
-    run_console(lista)
+    runMenu(lista)
 
 runAllTests()
 main()

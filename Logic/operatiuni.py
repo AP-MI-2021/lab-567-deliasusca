@@ -39,7 +39,7 @@ def schimbare_descriere_dupa_pret(pret_comparat, str_concat, lista):
             obiect_nou = creeaza_obiect(
                 get_id(obiect),
                 get_nume(obiect),
-                get_descriere(obiect)+str_concat,
+                get_descriere(obiect) + str_concat,
                 get_pret_achizitie(obiect),
                 get_locatie(obiect)
             )

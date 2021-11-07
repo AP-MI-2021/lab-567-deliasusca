@@ -1,6 +1,44 @@
 from Domain.obiect import get_id, creeaza_obiect
 from Logic.validator import validate_obiect
 
+def adauga_obiect2(obiecte, id, nume, descriere, pret, locatie):
+    """
+    Aceasta functie adauga o persoana in lista de persoane.
+    :param obiecte: lista de dictionare
+    :param id: numar intreg
+    :param nume: sir
+    :param descriere: string
+    :param x1: numar intreg
+    :param x2: numar intreg
+    :param x3: numar intreg
+    :return: 1, daca persoana poate fi adaugata (daca datele sunt valide); 0, in caz contrar
+    """
+    if int(id)>=0 and int(id)<=999999999:
+        ok = 1
+        p = creeaza_obiect(id, nume, descriere, pret, locatie)
+        obiecte.append(p)
+    else:
+        ok = 0
+    return ok
+
+def sterge_obiect2(obiecte, id):
+    """
+    Aceasta functie sterge o persoana din lista, daca id-ul acesteia este acelasi cu id-ul dat.
+    :param obiecte: lista de dictionare
+    :param id: numar intreg
+    :return: 0, daca persoana nu a fost gasita in lista; 1, daca da (si a fost stearsa)
+    """
+    n = len(obiecte)
+    i = 0
+    ok = 0
+    while i<n:
+        if get_id(obiecte[i]) == id:
+            obiecte.remove(obiecte[i])
+            ok = 1
+            i = n
+        else:
+            i+=1
+    return ok
 
 def adauga_obiect (id, nume, descriere, pret, locatie,lista):
     '''
@@ -76,3 +114,24 @@ def getBYId (id,lista):
         if get_id(obiect) == id:
             return obiect
     return None
+
+def primeste_comanda_si_argumentele(linie_de_comanda):
+    """
+    Aceasta functie primeste o linie de comanda din care extrage comanda si argumentele.
+    Functia functioneaza pentru separatorul ',' (virgula).
+    Comanda este ceea ce a gasit inainte de pozitia primului separator.
+    Argumentele se afla dupa primul separator.
+    Ca sa poata lucra pe acestea, desparte sirurile (pot fi mai multe cuvinte la fiecare argument) gasite,
+    de fiecare data cand intalneste virgula.
+    :param linie_de_comanda: sir
+    :return: comanda gasita si argumentele care vin cu aceasta
+    """
+    pozitie = linie_de_comanda.find(',')
+    if pozitie == -1:
+        return linie_de_comanda, []
+    comanda = linie_de_comanda[:pozitie]
+    argumente = linie_de_comanda[pozitie + 1:]
+    argumente = argumente.split(',')
+    for cuvant in argumente:
+        cuvant = cuvant.replace(',', '')
+    return comanda, argumente

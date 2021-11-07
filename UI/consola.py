@@ -1,7 +1,7 @@
 from Domain.obiect import to_string
 from Logic.crud import adauga_obiect, stergere_obiect, modificare_obiect
 from Logic.operatiuni import change_location, max_price, ordering_objects, sum_prices, concatenation_str
-from UI.command_line_console import runMenu2
+
 
 
 def printmenu():
@@ -101,8 +101,9 @@ def uiConcatenationStr(lista,undolist):
 
 
 
-def runMenu(lista):
+def runMenu():
     undolist = []
+    lista = []
     while True:
         printmenu()
         optiune = input ("Dati optiunea: ")
@@ -136,15 +137,8 @@ def runMenu(lista):
                 lista = undolist.pop()
             else:
                 print("Nu se poate face undo!")
-
-
-        elif optiune == "y":
-            runMenu2(lista)
-
-
         elif optiune == "a":
             showAll(lista)
-
         elif optiune == "x":
             break
         else:

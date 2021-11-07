@@ -1,14 +1,15 @@
-from Domain.obiect import get_nume, creeaza_obiect, get_id, get_descriere, get_pret_achizitie, get_locatie
+from Domain.obiect import get_locatie, get_pret, get_id, get_nume, get_descriere, creeaza_obiect
 
 
-def schimbare_locatie(locatie_initiala, locatie_noua, lista):
-    """
-    Muta toate obiectele dintr-o locatie in alta
-    :param locatie_initiala: locatia initiala
-    :param locatie_noua:  locatia unde o sa punem obiectele
-    :param lista: lista de obiecte
-    :return: lista in care obiectele din locatia initial o sa se afle in noua locatie
-    """
+
+def change_location(locatie_initiala, locatie_noua,lista):
+    '''
+    Mutarea tuturor obiectelor intr-o anumita locatie
+    :param locatie_noua: Locatia in care vor fi mutate obiectele
+    :param lista: Lista de obiecte
+    :return: Returneaza o lista cu obiectele mutate intr-o locatie precizata de user
+    '''
+
     lista_noua = []
     for obiect in lista:
         if locatie_initiala in get_locatie(obiect):
@@ -16,7 +17,7 @@ def schimbare_locatie(locatie_initiala, locatie_noua, lista):
                 get_id(obiect),
                 get_nume(obiect),
                 get_descriere(obiect),
-                get_pret_achizitie(obiect),
+                get_pret(obiect),
                 locatie_noua
             )
             lista_noua.append(obiect_nou)
@@ -25,37 +26,63 @@ def schimbare_locatie(locatie_initiala, locatie_noua, lista):
     return lista_noua
 
 
-def schimbare_descriere_dupa_pret(pret_comparat, str_concat, lista):
-    """
-    schimba descrierea la toate obiectele cu pret mai mare decat pret_comparat
-    :param pret_comparat: valoarea cu care sunt comparate toate preturile
-    :param str_concat:  stringul concatenat
+def max_price(lista):
+    '''
+    Determinam cel mai mare pret per locatie
     :param lista: lista de obiecte
-    :return: lista in care descrierea obiectelor cu prețul mai mare decât o valoare citită este modificata
-    """
-    lista_noua = []
+    :return: Returneaza locatia si pretul cel mai mare din ea.
+    '''
+    rezultat ={}
     for obiect in lista:
-        if pret_comparat < get_pret_achizitie(obiect):
-            obiect_nou = creeaza_obiect(
-                get_id(obiect),
-                get_nume(obiect),
-                get_descriere(obiect) + str_concat,
-                get_pret_achizitie(obiect),
-                get_locatie(obiect)
-            )
-            lista_noua.append(obiect_nou)
+        locatie= get_locatie(obiect)
+        if locatie in rezultat:
+             if get_pret(obiect)> rezultat[locatie]:
+                rezultat[locatie] = get_pret(obiect)
         else:
-            lista_noua.append(obiect)
-    return lista_noua
+            rezultat[locatie] = get_pret(obiect)
 
-def sort_obiecte(lista):
-    """
+    return rezultat
 
-    :param lista:
-    :return:
-    """
-    #return sorted(lista, key=sorting_criteria)
-    return sorted(lista, key = lambda obiect: get_pret_achizitie(obiect))
 
-def sorting_criteria(obiect):
-    return get_pret_achizitie(obiect)
+def ordering_objects(lista):
+    '''
+    Ordoneaza obiectele crescator dupa pretul de achizitie.
+    :param lista: Lista de obiecte
+    :return: Returneaza o lista in ordine crescatoare in functie de pretul obiectelor.
+    '''
+    return sorted(lista, key = lambda obiect:get_pret(obiect))
+
+def sum_prices (lista):
+    '''
+    Afișarea sumelor prețurilor pentru fiecare locație.
+    :param lista: Lista de obiecte.
+    :return: Returneaza sumelor prețurilor pentru fiecare locație.
+    '''
+    rezultat={}
+    for obiect in lista:
+        locatie = get_locatie(obiect)
+        pret = get_pret(obiect)
+        if locatie in rezultat:
+            rezultat[locatie] = rezultat[locatie] + pret
+        else:
+            rezultat[locatie] = pret
+    return rezultat
+
+
+def concatenation_str(pret,add_string,lista):
+    '''
+    Concateneaza un string citit la toate descrierile obiectelor cu prețul mai mare decât o valoare citită.
+    :param add_descriere: stringul adaugat la finalul fiecarei descriere
+    :param pret:float
+    :param lista:lista de obiecte
+    :return: Returneaza lista de obiecte cu stringul modificat
+    '''
+
+    rezultat = []
+    for obiect in lista:
+        if pret < get_pret(obiect):
+            rezultat.append(creeaza_obiect(get_id(obiect), get_nume(obiect),
+                                       get_descriere(obiect) + add_string, get_pret(obiect), get_locatie(obiect)))
+        else:
+            rezultat.append(obiect)
+    return rezultat

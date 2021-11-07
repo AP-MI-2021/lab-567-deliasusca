@@ -1,97 +1,154 @@
 from Domain.obiect import to_string
-from Logic.crud import adaugare_obiect, stergere_obiect, modifica_obiect
-from Logic.operatiuni import schimbare_locatie, schimbare_descriere_dupa_pret, sort_obiecte
+from Logic.crud import adauga_obiect, stergere_obiect, modificare_obiect
+from Logic.operatiuni import change_location, max_price, ordering_objects, sum_prices, concatenation_str
+from UI.command_line_console import runMenu2
 
 
-def printMenu():
-    print("""
-    MENIU
-    1. Adaugare obiect
-    2. Modificare obiect
-    3. Stergere obiect
-    4. Mutarea tuturor obiectelor dintr-o locație în alta.
-    5. Concatenarea unui string citit la toate descrierile obiectelor cu prețul mai mare decât o valoare citită.
-    6. Determinarea celui mai mare preț pentru fiecare locație.
-    7. Ordonarea obiectelor crescător după prețul de achiziție.
-    8. Afișarea sumelor prețurilor pentru fiecare locație.
-    a. Afisarea tuturor obiectelor
-    x. Iesire
-    """)
+def printmenu():
+    print("1. Adauga obiect")
+    print("2. Sterge obiect")
+    print("3. Modifica obiect")
+    print("4. Mutarea tuturor obiectelor intr-o locatie")
+    print("5. Determinarea celui mai mare preț pentru fiecare locație")
+    print("6. Ordonarea obiectelor crescător după prețul de achiziție.")
+    print("7. Afișarea sumelor prețurilor pentru fiecare locație.")
+    print("8. Concatenarea unui string citit la toate descrierile obiectelor cu prețul mai mare decât o valoare citită")
+    print("a. Afiseaza toate obiectele")
+    print("u. Undo")
+    print("y. Command Line")
+    print("x. Iesire")
 
-def ui_adaugare_obiect(lista):
-    """
-    Adaugam in lista de obiecte un obiect citit de la tastatura
-    :param lista: lista de obiecte
-    :return:
-    """
-    id = input('Dati id-ul obiectului')
-    nume = input('Dati numele')
-    descriere = input('Dati descrierea')
-    pret_achizitie = input('Dati pretul')
-    locatie = input('Dati locatia')
+
+def uiAdaugaObiect(lista,undolist):
     try:
-        lista = adaugare_obiect(id, nume, descriere, pret_achizitie, locatie, lista)
-        print('Obiectul a fost adaugat cu succes')
-        return lista
+        id=input ("Dati id-ul: ")
+        nume = input ("Dati numele: ")
+        descriere = input ("Dati descriere: ")
+        pret = float( input ("Dati pret: "))
+        locatie = input ("Dati locatie: ")
+        rezultat = adauga_obiect(id , nume, descriere, pret, locatie, lista)
+        undolist.append(lista)
+        return rezultat
     except ValueError as ve:
-        print("!!! Au aparut erori")
-        print(ve)
-    except:
-        print('Unknown error')
-    finally:
-        pass
-        # codul de aici se executa si daca a fost functia executata cu succes si si daca au aparut erori
+        print("Eroare: {}".format(ve))
+        return lista
 
-def ui_stergere_obiect(lista):
-    id = input ("Dati id-ul obiectului de sters: ")
-    return stergere_obiect(id, lista)
 
-def ui_modifica_obiect(lista):
-    id = input ("Dati id-ul obiectului de modificat: ")
-    nume = input ("Dati noul nume: ")
-    descriere = input ("Dati noua descriere: ")
-    pret_achizitie = input ("Dati noul pret de achizitie: ")
-    locatie = input ("Dati noua locatie: ")
+def uiStergereObiect(lista, undolist):
     try:
-        lista = modifica_obiect(id, nume, descriere, pret_achizitie, locatie, lista)
-        print('Obiectul a fost modificat cu succes')
-        return lista
+        id = input("Dati id-ul prajiturii de sters: ")
+        rezultat =  stergere_obiect(id, lista)
+        undolist.append(lista)
+        return rezultat
     except ValueError as ve:
-        print("!!! Au aparut erori")
-        print(ve)
-    except:
-        print('Unknown error')
+        print("Eroare: {}.".format(ve))
 
-def show_all(lista):
+
+
+def uiModificaObiect(lista,undolist):
+    try:
+        id = input("Dati id-ul prajiturii de modificat : ")
+        nume = input("Dati noul nume: ")
+        descriere = input("Dati noua descriere: ")
+        pret = float (input("Dati noul pret: "))
+        locatie = input("Dati noua locatie: ")
+        rezultat = modificare_obiect(id, nume, descriere, pret, locatie,lista)
+        undolist.append(lista)
+        return rezultat
+    except ValueError as ve:
+        print("Eroare: {}".format(ve))
+        return lista
+
+
+def uiChangeLocation(lista,undolist):
+    locatie_initiala = input("Dati locatiea initiala: ")
+    locatie_noua = input("Dati locatia noua: ")
+    rezultat = change_location(locatie_initiala, locatie_noua,lista)
+    undolist.append(lista)
+    return rezultat
+
+def uiMaxPrice(lista):
+    rezultat = max_price(lista)
+    for locatie in rezultat:
+        print("Locatia {} are pretul maxim {}".format(locatie, rezultat[locatie]))
+
+
+def uiOrderingObjects(lista,undolist):
+    rezultat = ordering_objects(lista)
+    undolist.append(lista)
+    showAll(rezultat)
+
+
+def showAll(lista):
     for obiect in lista:
         print(to_string(obiect))
+    if lista == []:
+        print ("Dictionarul este gol!")
+
+
+def uiSumPrices(lista):
+    rezultat = sum_prices(lista)
+    for locatie in rezultat:
+        print("Locatia {} are suma de preturi:{}".format(locatie,rezultat[locatie]))
+
+
+def uiConcatenationStr(lista,undolist):
+        add_string = str(input("Dati stringul: "))
+        pret = float(input("Dati valoarea: "))
+        rezultat=concatenation_str(pret,add_string,lista)
+        undolist.append(lista)
+        showAll(rezultat)
+
+
 
 def runMenu(lista):
-    while True :
-        printMenu()
+    undolist = []
+    while True:
+        printmenu()
         optiune = input ("Dati optiunea: ")
         if optiune == "1":
-            lista = ui_adaugare_obiect(lista)
+
+            lista = uiAdaugaObiect(lista,undolist)
+
         elif optiune == "2":
-            lista =ui_stergere_obiect(lista)
-        elif optiune =="3":
-            lista =ui_modifica_obiect(lista)
+            lista = uiStergereObiect(lista,undolist)
+
+        elif optiune == "3":
+            lista = uiModificaObiect(lista,undolist)
+
         elif optiune == "4":
-            locatie_initiala = input("din ce locatie doresti sa le muti? ")
-            locatie_noua = input("in ce locatie doresti sa se afle obiectele? ")
-            lista = schimbare_locatie(locatie_initiala, locatie_noua, lista)
+            lista = uiChangeLocation(lista,undolist)
+
         elif optiune == "5":
-            str_concat = input("ce string doresti sa adaugi? ")
-            pret_comparat = float(input("cu ce valoare doresti sa compari preturile? "))
-            lista = schimbare_descriere_dupa_pret(pret_comparat, str_concat, lista)
-        elif optiune =="7":
-            lista = sort_obiecte(lista)
-        elif optiune =="a":
-            show_all(lista)
-        elif optiune =="x":
+            uiMaxPrice(lista)
+
+        elif optiune == "6":
+            uiOrderingObjects(lista, undolist)
+
+        elif optiune == "7":
+            uiSumPrices(lista)
+
+        elif optiune == "8":
+            uiConcatenationStr(lista,undolist)
+
+        elif optiune == "u":
+            if len(undolist) > 0:
+                lista = undolist.pop()
+            else:
+                print("Nu se poate face undo!")
+
+
+        elif optiune == "y":
+            runMenu2(lista)
+
+
+        elif optiune == "a":
+            showAll(lista)
+
+        elif optiune == "x":
             break
         else:
-            print("Optiunea este gresita!Reincercati: ")
+            print("Optiune gresita! Reincercati: ")
 
 
 

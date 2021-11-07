@@ -1,54 +1,83 @@
-from Domain.obiect import get_nume, get_descriere, get_pret_achizitie, get_locatie, creeaza_obiect, get_id
-from Logic.crud import getById, adaugare_obiect, modifica_obiect, stergere_obiect
+from Domain.obiect import get_id, get_nume, get_descriere, get_pret, get_locatie
+from Logic.crud import adauga_obiect, getBYId, stergere_obiect, modificare_obiect
 
 
-def test_adaugare_obiect():
+def test_adauga_obiect():
     lista = []
-    lista = adaugare_obiect("111", "cartea Minunea", "inspirat din realitate", 100, "2345", lista)
-    obiect_adaugat = creeaza_obiect("111", "cartea Minunea", "inspirat din realitate", 100, "2345")
-    assert len(lista) == 1
-    assert lista[0] == obiect_adaugat
-    assert get_nume(lista[0]) == "cartea Minunea"
-    assert get_descriere(lista[0]) == "inspirat din realitate"
-    assert get_pret_achizitie(lista[0]) == 100
-    assert get_locatie(lista[0]) == "2345"
+    lista = adauga_obiect ("1", "calculator", "Acer" , 2400 , "loc1",lista)
 
-    lista = adaugare_obiect('12d', 'nume2', 'descriere2', 34.05, 'S345', lista)
-    obiect_adaugat_2 = creeaza_obiect('12d', 'nume2', 'descriere2', 34.05, 'S345')
-    assert len(lista) == 2
-    assert lista[0] == obiect_adaugat
-    assert lista[1] == obiect_adaugat_2
+    assert len(lista) == 1
+    assert get_id(getBYId("1",lista)) == "1"
+    assert get_nume(getBYId("1",lista)) == "calculator"
+    assert get_descriere(getBYId("1",lista)) == "Acer"
+    assert get_pret(getBYId("1",lista)) == 2400
+    assert get_locatie(getBYId("1",lista)) == "loc1"
+
 
 def test_stergere_obiect():
-    o1 = creeaza_obiect('123', 'nume1', 'descriere1', 45.89, 'S905')
-    o2 = creeaza_obiect('12d', 'nume2', 'descriere2', 34.05, 'S345')
-    lista = [o1, o2]
-    assert len(lista) == 2
-    lista = stergere_obiect('12d', lista)
+    lista= []
+    lista = adauga_obiect("1", "calculator", "Acer", 2400, "loc1", [])
+    lista = adauga_obiect("2", "monitor", "Acer", 1200, "loc1", lista)
+
+    lista = stergere_obiect ("1", lista)
     assert len(lista) == 1
-    lista = stergere_obiect('1sd2d', lista)
-    assert len(lista) == 1
-
-
-def test_modifica_obiect():
-    o1 = creeaza_obiect('123', 'nume1', 'descriere1', 45.89, 'S905')
-    o2 = creeaza_obiect('12d', 'nume2', 'descriere2', 34.05, 'S345')
-
-    lista = [o1, o2]
-    assert len(lista) == 2
-    lista = modifica_obiect('12d', 'nume new', 'descriere new', 46, 'S345', lista)
-    assert len(lista) == 2
-    o1_new = getById('12d', lista)
-    assert get_id(o1_new) == '12d'
-    assert get_nume(o1_new) == 'nume new'
-    assert get_descriere(o1_new) == 'descriere new'
-    assert get_pret_achizitie(o1_new) == 46
-    assert get_locatie(o1_new) == 'S345'
+    assert getBYId("1", lista) is None
 
     try:
-        lista = modifica_obiect('12d', '', 'descriere new', -46, 'S345', lista)
-        assert False
+        lista = stergere_obiect("3", lista)
     except ValueError:
-        assert True
+        assert len(lista) == 1
+        assert getBYId("2", lista) is not None
+    except Exception:
+        assert False
+
+def test_getById():
+    list = []
+    list = adauga_obiect(13, "Laptop", "Acer", 2490, "loc4", list)
+    list = adauga_obiect(12, "Monitor Dell", "144Hz", 2000, "loc5", list)
+    assert get_id(getBYId(12, list)) == 12
+    assert get_nume(getBYId(12, list)) == "Monitor Dell"
+    assert get_descriere(getBYId(12, list)) == "144Hz"
+    assert get_pret(getBYId(12, list)) == 2000
+    assert get_locatie(getBYId(12, list)) == "loc5"
+
+    assert get_id(getBYId(13, list)) == 13
+    assert get_nume(getBYId(13, list)) == "Laptop"
+    assert get_descriere(getBYId(13, list)) == "Acer"
+    assert get_pret(getBYId(13, list)) == 2490
+    assert get_locatie(getBYId(13, list)) == "loc4"
+
+
+
+def test_modificare_obiect():
+    lista = []
+    lista = adauga_obiect(1, "masa", "lemn", 100, "loc2", lista)
+    lista = adauga_obiect(2, "scaun", "fier forjat", 200, "loc2", lista)
+
+    lista = modificare_obiect(2, "scaun", "fier forjat", 300, "loc3", lista)
+
+    assert len(lista) == 2
+    obiect_modificat = getBYId(2, lista)
+    assert get_pret(obiect_modificat) == 300
+    assert get_locatie(obiect_modificat) == "loc3"
+    obiect_nemodificat = getBYId(1, lista)
+    assert get_pret(obiect_nemodificat) == 100
+    assert get_locatie(obiect_nemodificat) == "loc2"
+
+    lista=[]
+    lista=adauga_obiect("1","masa","lemn",200,"loc1",lista)
+
+    try:
+        lista=modificare_obiect("3","pc","acer",2000,"loc3",lista)
+    except ValueError:
+
+        obiect_nemodificat = getBYId("1", lista)
+        assert get_id(obiect_nemodificat) == "1"
+        assert get_nume(obiect_nemodificat) == "masa"
+        assert get_descriere(obiect_nemodificat) == "lemn"
+        assert get_pret(obiect_nemodificat) == 200
+        assert get_locatie(obiect_nemodificat) == "loc1"
+    except Exception:
+        assert False
 
 

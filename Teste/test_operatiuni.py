@@ -15,13 +15,6 @@ def test_change_location():
     assert get_locatie(lista[1]) == "loc3"
     assert get_locatie(lista[2]) == "loc2"
 
-
-
-
-
-
-
-
 def test_max_price():
     lista = []
     lista = adauga_obiect(1, "pc", "descriere 1", 4000, "loc1", lista)
@@ -60,17 +53,18 @@ def test_sum_prices():
     assert rezultat["loc1"] == 5000
     assert rezultat["loc2"] == 3000
 
+def test_concatenation_str():
+    lista = []
+    lista = adauga_obiect(1, "pc", "descriere", 4000, "loc1", lista)
+    lista = adauga_obiect(2, "laptop", "descriere", 1000, "loc1", lista)
+    lista = adauga_obiect(3, "birou", "descriere", 3000, "loc2", lista)
 
-    def test_concatenation_str():
-        lista = []
-        lista = adauga_obiect(1, "pc", "descriere", 4000, "loc1", lista)
-        lista = adauga_obiect(2, "laptop", "descriere", 1000, "loc1", lista)
-        lista = adauga_obiect(3, "birou", "descriere", 3000, "loc2", lista)
+    lista = concatenation_str(lista, "adaugare", 2000)
 
-        lista= concatenation_str(lista,"adaugare",2000)
+    assert get_descriere(getBYId(lista, 1)) == "descriereadaugare"
+    assert get_descriere(getBYId(lista, 2)) == "descriere"
+    assert get_descriere(getBYId(lista, 3)) == "descriereadaugare"
 
-        assert get_descriere(getBYId(lista,1)) == "descriereadaugare"
-        assert get_descriere(getBYId(lista,2)) == "descreire"
-        assert get_descriere(getBYId(lista,3)) == "descriereadaugare"
+
 
 
